@@ -1,0 +1,50 @@
+<!-- 启用Skyline高性能渲染 -->
+<view class="game-container" style="width: 100%; height: 100%;" skyline:rendering-mode="highPerformance">
+  <!-- 游戏画布 -->
+  <canvas 
+    type="2d" 
+    id="game-canvas" 
+    class="game-canvas"
+    style="width: 100%; height: 100%;"
+    bindtouchstart="onTouchStart"
+    bindtouchmove="onTouchMove"
+    bindtouchend="onTouchEnd"
+  ></canvas>
+  
+  <!-- 开始界面 -->
+  <view wx:if="{{!isGameStarted}}" class="start-screen">
+    <button
+      class="start-button"
+      bindtap="startGame"
+      disabled="{{!isGameReady}}">
+      {{isGameReady ? '开始游戏' : '加载中...'}}
+    </button>
+  </view>
+
+  <!-- 游戏结束弹窗 -->
+  <view wx:if="{{isGameOver}}" class="game-over-popup">
+    <text>游戏结束</text>
+    <text>最终深度: {{depth}}米</text>
+    <button bindtap="restartGame">重新开始</button>
+  </view>
+  
+  <!-- 游戏胜利弹窗 -->
+  <view wx:if="{{isGameWon}}" class="game-won-popup">
+    <text class="congrats-title">恭喜通关！</text>
+    <text>我们一起创造了红格温泉！</text>
+    <button bindtap="restartGame">再来一局</button>
+  </view>
+
+  <!-- 知识点弹窗 -->
+  <view wx:if="{{showKnowledgePopup}}" class="knowledge-popup">
+  <view class="knowledge-title">{{currentKnowledge.title}}</view>
+  <view class="knowledge-content">{{currentKnowledge.content}}</view>
+  <button class="knowledge-button" bindtap="resumeGame">我明白了！</button>
+</view>
+  
+  <!-- 游戏控制UI -->
+  <view wx:if="{{isGameStarted && !isGameOver}}" class="control-panel">
+    <text>深度: {{depth}}米</text>
+    <progress percent="{{progress}}" stroke-width="10"/>
+  </view>
+</view>
